@@ -1,6 +1,6 @@
 # Looper
 
-This is WIP repo for personal addon to Cinder [libcinder.org], currently slowly embracing beuty of new glNext API. 
+This is WIP repo for personal addon to [Cinder](libcinder.org), currently slowly embracing beauty of new glNext API. 
 
 What this ~~does~~ should do:
 
@@ -29,4 +29,4 @@ Do not any harm (ehhh... I tottaly suck at this)
 ### This is currently using 
 
 - [Cinder](github.com/cinder/Cinder)
-- [@Cinder ImGui Block by Simon Geilfus](https://github.com/simongeilfus/Cinder-ImGui)
+- [Cinder ImGui Block by Simon Geilfus](https://github.com/simongeilfus/Cinder-ImGui)
