@@ -152,6 +152,7 @@ private:
 Looper::Looper()
 {
 	recording = plaing = false;
+	
 	ci::app::getWindow()->getSignalPostDraw().connect([this]() {update(); });
 	index = 0;
 	data.reserve(0);
