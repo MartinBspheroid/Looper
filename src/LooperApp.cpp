@@ -46,22 +46,24 @@ void LooperApp::update()
 	{
 		ui::Begin();
 		loop->pushData(getMousePos().y - 200);
-		ui::Checkbox("Recording", &loop->recording);
-		ui::Checkbox("Playing", &loop->plaing);
+		(loop->isRecording()) ? ui::LabelText("Status:", "RECORDING") : ui::LabelText("Status:","Playing");
 		ui::Separator();
 		ui::Value("Index", loop->getIndex());
 		ui::Value("Buffer size", loop->getBufferSize());
-		if (loop->getIndex() > 50 && loop->getBufferSize() > 100){
-			//	CI_BREAKPOINT();
-		}
+		
+		
 
 		float position = float((float)loop->getIndex() / (float)loop->getBufferSize());
 		ui::Value("pos", position);
 		ui::SliderFloat("position", &position, 0.0, 1.0);
-		static bool smooth = false;
-		if (ui::Button("smooth")){
-			loop->smooth();
+		static bool smooth, smoothCos = false;
+		if (ui::Button("smooth linear")){
+			loop->smoothLin();
 		}
+		if (ui::Button("smooth cosine")){
+			loop->smoothCos();
+		}
+
 
 		if (loop->getBufferSize() > 0){
 			ui::PlotLines("function", loop->getDataRef(), loop->getBufferSize(), 0, "", 0, 769, ImVec2(400, 400));
@@ -70,9 +72,6 @@ void LooperApp::update()
 		ui::End();
 	}
 	
-
-
-
 }
 
 void LooperApp::draw()
@@ -86,23 +85,48 @@ void LooperApp::draw()
 	TriMesh mesh(g, geomFmt);
 	gl::BatchRef batch = gl::Batch::create(mesh, shader);
 	static int offset = 0;
-if(loop)	ui::SliderInt("offset", &offset, -100, 100);
+	static bool offsetTest = true;
+	static bool mixTest = false;
 
-	gl::pushModelMatrix();
-	gl::translate(vec2(0, loop->getValue()));
-	batch->draw();
-	gl::popModelMatrix();
+	if (ui::Button("Invert")){ loop->invert(); }
+
+	ui::Checkbox("offset test", &offsetTest);
+	ui::Checkbox("mixing test", &mixTest);
+	
+	if (ui::Button("TEST WINDOW")){ ui::ShowTestWindow(); }
 
 
-	for (size_t i = 0; i < 10; i++)
+	if (offsetTest)
 	{
-		gl::ScopedModelMatrix scpModelMtx;
-		gl::translate(vec2(i * 50, loop->getDataWithOffset(i*offset)));
-		gl::color(Color(CM_HSV, i / (2 * M_PI), 1, 1));
-		if(loop)ui::Value(toString(i*offset).c_str(), loop->getDataWithOffset(i*offset));
+		ui::SliderInt("offset", &offset, -100, 100);
 
+		gl::pushModelMatrix();
+		gl::translate(vec2(0, loop->getValue()));
 		batch->draw();
+		gl::popModelMatrix();
+
+
+		for (size_t i = 0; i < 10; i++)
+		{
+			gl::ScopedModelMatrix scpModelMtx;
+			gl::translate(vec2(i * 50, loop->getValueWithOffset(i*offset)));
+			gl::color(Color(CM_HSV, i / (2 * M_PI), 1, 1));
+			if (loop)ui::Value(toString(i*offset).c_str(), loop->getValueWithOffset(i*offset));
+
+			batch->draw();
+		}
 	}
+	if (mixTest){
+		static float dryWet = 0;
+		ui::SliderFloat("dry/wet", &dryWet, 0, 1);
+		gl::pushModelMatrix();
+		gl::translate(vec2(0, loop->getValueMixed(dryWet)));
+		batch->draw();
+		gl::popModelMatrix();
+
+	}
+
+
 
 
 
@@ -113,7 +137,7 @@ void LooperApp::keyUp(KeyEvent event)
 {
 	if (event.getCode() == KeyEvent::KEY_SPACE)
 	{
-		loop->record();
+		loop->toggleRecord();
 	}
 	if (event.getCode() == KeyEvent::KEY_RETURN)
 	{
@@ -132,6 +156,4 @@ CINDER_APP(LooperApp, RendererGl)
 
 void LooperApp::mouseMove(MouseEvent event)
 {
-
-
 }

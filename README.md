@@ -15,7 +15,7 @@ What this ~~does~~ should do:
   - using std::signals functionality
   - stretching, shrinking, nudging forward/backward
   - quantizingclose
-  - smoothing input
+  - smoothing values played back
   - inverting buffer
   - using templates to get more generic behavior
 
