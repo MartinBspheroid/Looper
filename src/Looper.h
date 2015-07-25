@@ -15,7 +15,6 @@ public:
 	~Looper();
 
 	void toggleRecord();
-
 	float getValue();
 	float getValueWithOffset(const int &offset);
 	// mixing (dry/wet implementation)
@@ -26,14 +25,13 @@ public:
 	void pushData(const float& value);
 	void clear();
 
-
-
 	// highly experimental thing for testing purposes
 	const float* getDataRef(){return &data[0]; }
 
 	bool isRecording(){ return recording; }
 	void smoothLin();
 	void smoothCos();
+	void inverse();
 
 private:
 	float passThrough;

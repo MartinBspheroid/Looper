@@ -9,7 +9,7 @@ void Looper::toggleRecord()
 	
 	recording = !recording;
 	index--; /// ugly hack but it works
-	console() << "Recording going" << recording << endl;
+//	console() << "Recording going" << recording << endl;
 }
 
 float Looper::getValue()
@@ -123,3 +123,8 @@ Looper::Looper()
 }
 
 Looper::~Looper(){}
+
+void Looper::inverse()
+{
+	reverse(data.begin(), data.end());
+}

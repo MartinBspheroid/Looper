@@ -57,17 +57,22 @@ void LooperApp::update()
 		ui::Value("pos", position);
 		ui::SliderFloat("position", &position, 0.0, 1.0);
 		static bool smooth, smoothCos = false;
-		if (ui::Button("smooth linear")){
-			loop->smoothLin();
-		}
-		if (ui::Button("smooth cosine")){
-			loop->smoothCos();
-		}
 
 
 		if (loop->getBufferSize() > 0){
-			ui::PlotLines("function", loop->getDataRef(), loop->getBufferSize(), 0, "", 0, 769, ImVec2(200, 200));
-			
+			ui::PlotLines("function", loop->getDataRef(), loop->getBufferSize(), 0, "", 0, 769, ImVec2(200, 200));	
+		}
+		if (ui::CollapsingHeader("Options")){
+			if (ui::Button("smooth linear")){
+				loop->smoothLin();
+			}
+			if (ui::Button("smooth cosine")){
+				loop->smoothCos();
+			}
+		}
+		if (ui::Button("inverse"))
+		{
+			loop->inverse();
 		}
 		ui::End();
 	}
@@ -125,11 +130,6 @@ void LooperApp::draw()
 		gl::popModelMatrix();
 
 	}
-
-
-
-
-
 	ui::Render();
 }
 
