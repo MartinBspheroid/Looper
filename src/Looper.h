@@ -3,9 +3,6 @@
 #include "CinderImGui.h"
 #include "cinder/Rand.h"
 
-
-
-
 class Looper;
 
 typedef std::shared_ptr<Looper> LooperRef;

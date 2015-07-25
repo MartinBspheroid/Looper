@@ -1,15 +1,22 @@
 #include "Looper.h"
 
+using namespace std;
+using namespace ci;
+using namespace ci::app;
+
 void Looper::toggleRecord()
 {
+	
 	recording = !recording;
+	index--; /// ugly hack but it works
+	console() << "Recording going" << recording << endl;
 }
 
 float Looper::getValue()
 {
 	if (data.size() > 0 && !recording)
 	{
-		return data.at(index);
+ 		return data.at(index);
 	}
 	else {
 		return passThrough;
@@ -40,12 +47,17 @@ float Looper::getValueMixed(float mix)
 void Looper::pushData(const float& value)
 {
 	passThrough = value;
-	if (recording)
+	if (recording && index >= data.size())
 	{
 		data.push_back(value);
+		console() << "pushed value to index " << index << endl;
 
 		//index++;
-
+	}
+	else if (recording && index < data.size())
+	{
+		data.at(index) = value;
+		console() << "overdub value to index " << index << endl;
 	}
 }
 
@@ -54,7 +66,6 @@ void Looper::clear()
 	data.clear();
 	index = 0;
 }
-
 
 void Looper::smoothLin()
 {
@@ -81,7 +92,11 @@ void Looper::update()
 	if (data.size() > 0)
 	{
 		index++;
+		//console() << "update index " << index << endl;
+	}
+	if (!recording && data.size() > 0){
 		index %= data.size();
+		console() << "rollBack" << endl;
 	}
 }
 

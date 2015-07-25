@@ -66,7 +66,7 @@ void LooperApp::update()
 
 
 		if (loop->getBufferSize() > 0){
-			ui::PlotLines("function", loop->getDataRef(), loop->getBufferSize(), 0, "", 0, 769, ImVec2(400, 400));
+			ui::PlotLines("function", loop->getDataRef(), loop->getBufferSize(), 0, "", 0, 769, ImVec2(200, 200));
 			
 		}
 		ui::End();
