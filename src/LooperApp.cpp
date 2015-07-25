@@ -88,7 +88,7 @@ void LooperApp::draw()
 	static bool offsetTest = true;
 	static bool mixTest = false;
 
-	if (ui::Button("Invert")){ loop->invert(); }
+	
 
 	ui::Checkbox("offset test", &offsetTest);
 	ui::Checkbox("mixing test", &mixTest);

@@ -29,15 +29,11 @@ public:
 	void pushData(const float& value);
 	void clear();
 
-	// TODO this does not work
-	void invert();
 
 
 	// highly experimental thing for testing purposes
 	const float* getDataRef(){return &data[0]; }
 
-	const int testFunc();
-	
 	bool isRecording(){ return recording; }
 	void smoothLin();
 	void smoothCos();
